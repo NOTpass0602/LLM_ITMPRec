@@ -1,6 +1,6 @@
 # LLM-Enhanced ITMPRec
 
-This repository contains the final cleaned code package for an LLM-enhanced ITMPRec project. It is based on **ITMPRec: Intention-based Targeted Multi-round Proactive Recommendation** and adds LIR/LLM modules, bridge regularization experiments, semantic profile scoring, feedback simulation, and replanning experiments.
+This repository contains the final code package for an LLM-enhanced ITMPRec project. Built upon ITMPRec: Intention-based Targeted Multi-round Proactive Recommendation, the project introduces two core modules into the original target-oriented multi-round proactive recommendation framework: LLM Bridge Ranking Regularization and Proactive Risk-aware Replanning. The first module uses offline LLM-generated transition, risk, and acceptance bridge scores to impose a weak ranking regularization constraint on the backbone item representations during training. The second module proactively identifies high-risk intermediate items during multi-round inference based on LLM risk / transition judgments, and triggers local replanning to improve the ranking gain of the target item.
 
 ## Repository Layout
 
@@ -22,7 +22,7 @@ This repository contains the final cleaned code package for an LLM-enhanced ITMP
 ## Main Contributions
 
 - Adds LIR/LLM modules under `ITMPRec-master/src/llm_itmprec/`.
-- Adds semantic profile scoring, CoT bridge planning, complex feedback simulation, and replanning.
+- Adds an LLM semantic CoT-based bridge planning scoring mechanism, and integrated reject-based and proactive risk-aware replan strategies to correct high-risk guidance paths.
 - Adds bridge ranking regularization for the ITMPRec backbone.
 - Provides reproducible scripts under `ITMPRec-master/scripts/`.
 - Keeps experiment logs and summaries under `ITMPRec-master/results/lir_ablation/`.
@@ -69,33 +69,12 @@ ITMPRec-master/environment.yml
 ITMPRec-master/environment-rtx4080.yml
 ```
 
-The original project depends on Python 3.8 bytecode files:
-
-```text
-ITMPRec-master/src/modules.pyc
-ITMPRec-master/src/trainers.pyc
-```
-
-These two files are intentionally retained because the original source files are not available.
-
 ## Reproduction
 
 Start from the detailed Chinese guide:
 
 ```text
 ITMPRec-master/ITMPRec复现指南.zh-CN.md
-```
-
-Typical workflow:
-
-```powershell
-cd ITMPRec-master
-powershell -ExecutionPolicy Bypass -File scripts\check_env.ps1
-powershell -ExecutionPolicy Bypass -File scripts\prepare_pyc_imports.ps1
-powershell -ExecutionPolicy Bypass -File scripts\train_graphau.ps1
-powershell -ExecutionPolicy Bypass -File scripts\train_itmprec.ps1
-powershell -ExecutionPolicy Bypass -File scripts\eval_ipg_prematch.ps1
-powershell -ExecutionPolicy Bypass -File scripts\eval_lir_prematch.ps1
 ```
 
 Large datasets, generated embeddings, and most checkpoints are excluded from this repository. Please prepare them following the reproduction guide.

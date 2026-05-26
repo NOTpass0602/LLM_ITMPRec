@@ -1,6 +1,6 @@
 # LLM 增强的 ITMPRec 项目
 
-本仓库是 LLM 增强版 ITMPRec 的最终整理代码包。项目基于 **ITMPRec: Intention-based Targeted Multi-round Proactive Recommendation**，在原始主动推荐框架上加入了 LIR/LLM 相关模块、语义画像评分、CoT 桥接规划、复杂反馈模拟、replan 纠偏机制，以及 bridge ranking regularization 实验。
+本仓库是 LLM 增强版 ITMPRec 的整理代码包。项目基于 ITMPRec: Intention-based Targeted Multi-round Proactive Recommendation，在原始目标导向多轮主动推荐框架上加入了两个核心模块：LLM Bridge Ranking Regularization 和 Proactive Risk-aware Replanning。前者利用离线 LLM 生成的 transition、risk 与 acceptance bridge score，在训练阶段对 backbone item representation 进行弱排序正则约束。后者在多轮推理阶段根据 LLM risk / transition 判断提前识别高风险中间物品，并触发局部重规划，从而提升目标物品排序增益。
 
 ## 目录结构
 
@@ -22,7 +22,7 @@
 ## 主要工作
 
 - 在 `ITMPRec-master/src/llm_itmprec/` 下新增 LIR/LLM 增强模块。
-- 实现语义 profile scoring、CoT bridge planning、复杂反馈模拟和 replan 机制。
+- 实现基于 LLM 语义 CoT 的 bridge planning 评分机制，并结合 reject-based 与 proactive risk-aware replan 对高风险牵引路径进行纠偏。
 - 在 ITMPRec backbone 训练中加入 bridge ranking regularization。
 - 在 `ITMPRec-master/scripts/` 中整理训练、评估和环境检查脚本，便于复现。
 - 在 `ITMPRec-master/results/lir_ablation/` 中保留实验日志、汇总表和分析文档。
@@ -69,33 +69,12 @@ ITMPRec-master/environment.yml
 ITMPRec-master/environment-rtx4080.yml
 ```
 
-原始 ITMPRec 项目依赖两个 Python 3.8 字节码文件：
-
-```text
-ITMPRec-master/src/modules.pyc
-ITMPRec-master/src/trainers.pyc
-```
-
-由于原项目没有提供对应源码，这两个 `.pyc` 文件被保留在最终提交包中。
-
 ## 复现方式
 
 建议优先阅读详细复现指南：
 
 ```text
 ITMPRec-master/ITMPRec复现指南.zh-CN.md
-```
-
-典型运行流程如下：
-
-```powershell
-cd ITMPRec-master
-powershell -ExecutionPolicy Bypass -File scripts\check_env.ps1
-powershell -ExecutionPolicy Bypass -File scripts\prepare_pyc_imports.ps1
-powershell -ExecutionPolicy Bypass -File scripts\train_graphau.ps1
-powershell -ExecutionPolicy Bypass -File scripts\train_itmprec.ps1
-powershell -ExecutionPolicy Bypass -File scripts\eval_ipg_prematch.ps1
-powershell -ExecutionPolicy Bypass -File scripts\eval_lir_prematch.ps1
 ```
 
 本仓库没有包含大体积原始数据集、生成的 embedding 文件和大部分 checkpoint。完整运行时需要按照复现指南重新准备数据或生成中间文件。
@@ -110,11 +89,4 @@ powershell -ExecutionPolicy Bypass -File scripts\eval_lir_prematch.ps1
 - `ITMPRec-master/EXPERIMENT_LIR_ITMPREC.zh-CN.md`：LIR-ITMPRec 实验说明。
 - `ITMPRec-master/ITMPRec复现指南.zh-CN.md`：最完整的本地复现流程。
 
-## 清理说明
 
-本仓库是最终整理后的代码包，已排除以下内容：
-
-- 虚拟环境和 IDE 配置，如 `.venv`、`.idea`。
-- Python 缓存，如 `__pycache__`。
-- 原始数据集、大体积 embedding 和中间数据文件。
-- 非最佳 checkpoint、训练临时输出和无关参考项目。
