@@ -1,0 +1,23 @@
+name: itmprec
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - cudatoolkit=11.1
+  - faiss-gpu=1.7.1
+  - numpy
+  - scipy
+  - pip
+  - pip:
+      - --find-links https://download.pytorch.org/whl/torch_stable.html
+      - torch==1.9.0+cu111
+      - torchvision==0.10.0+cu111
+      - torchaudio==0.9.0
+      - --find-links https://data.dgl.ai/wheels/repo.html
+      - dgl-cu111
+      - tqdm==4.26.0
+      - fsspec
+      - kmeans-pytorch
+      - fast-pytorch-kmeans

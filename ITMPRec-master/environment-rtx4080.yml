@@ -1,0 +1,36 @@
+name: itmprec-rtx4080
+channels:
+  - pytorch
+  - nvidia
+  - dglteam/label/cu121
+  - conda-forge
+  - defaults
+dependencies:
+  # Keep Python 3.8 because this repository ships modules/trainers as
+  # CPython 3.8 bytecode only.
+  - python=3.8
+
+  # RTX 4080 works well with CUDA 12.1 builds. This is much newer than the
+  # original CUDA 11.1 stack while staying compatible with old Python 3.8 code.
+  - pytorch=2.1.2
+  - torchvision=0.16.2
+  - torchaudio=2.1.2
+  - pytorch-cuda=12.1
+
+  # GraphAU depends on DGL. Use the CUDA 12.1 DGL channel above.
+  - dgl=2.1.*
+
+  # ITMPRec imports faiss; GPU FAISS is preferred for clustering/search.
+  # Let conda choose the newest Python-3.8-compatible build.
+  - faiss-gpu
+
+  # numpy 2.x can break older PyTorch/DGL/scipy stacks and legacy code.
+  - numpy<2
+  - scipy
+  - pip
+  - pip:
+      - tqdm>=4.64
+      - fsspec
+      - torchdata==0.7.1
+      - kmeans-pytorch
+      - sentence-transformers==2.7.0

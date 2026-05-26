@@ -1,0 +1,36 @@
+# Python caches
+__pycache__/
+*.pyo
+
+# Virtual environments and IDE files
+.venv/
+venv/
+.idea/
+.vscode/
+
+# OS/editor temporary files
+Thumbs.db
+.DS_Store
+~$*
+*.tmp
+
+# Large local data and generated artifacts
+ITMPRec-master/data/*/
+ITMPRec-master/data/**/*.txt
+ITMPRec-master/data/**/*.jsonl
+ITMPRec-master/data/**/*.pt
+ITMPRec-master/data/**/*.csv
+ITMPRec-master/data/**/*.dat
+ITMPRec-master/data_graphau/
+GraphAU-main/GraphAU-main/datasets/
+
+# Training outputs: keep the selected best checkpoint explicitly tracked
+ITMPRec-master/src/output/*
+!ITMPRec-master/src/output/ICLRec-ml100k-42.pt
+!ITMPRec-master/src/output/ICLRec-ml100k-42.txt
+ITMPRec-master/graphau_runs/
+
+# Archives
+*.zip
+*.7z
+*.rar
